@@ -1,0 +1,161 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/plus-jakarta-sans";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: 'Outfit Variable', sans-serif;
+    --font-sans: 'Plus Jakarta Sans Variable', sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    --background: #0C232A;
+    --foreground: #F2F7F7;
+    --card: #12343E;
+    --card-foreground: #F2F7F7;
+    --popover: #0F2D35;
+    --popover-foreground: #F2F7F7;
+    --primary: #FF6B00;
+    --primary-foreground: #FFFFFF;
+    --secondary: #174450;
+    --secondary-foreground: #F2F7F7;
+    --muted: #12343E;
+    --muted-foreground: #96B8C2;
+    --accent: #174450;
+    --accent-foreground: #F2F7F7;
+    --destructive: #E0356B;
+    --border: #174450;
+    --input: #1B4A58;
+    --ring: #FF6B00;
+    --chart-1: #FF6B00;
+    --chart-2: #D91B5C;
+    --chart-3: #2FA3B8;
+    --chart-4: #96B8C2;
+    --chart-5: #174450;
+    --radius: 0.625rem;
+    --sidebar: #081B20;
+    --sidebar-foreground: #F2F7F7;
+    --sidebar-primary: #FF6B00;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #174450;
+    --sidebar-accent-foreground: #F2F7F7;
+    --sidebar-border: #174450;
+    --sidebar-ring: #FF6B00;
+}
+
+.dark {
+    --background: #0C232A;
+    --foreground: #F2F7F7;
+    --card: #12343E;
+    --card-foreground: #F2F7F7;
+    --popover: #0F2D35;
+    --popover-foreground: #F2F7F7;
+    --primary: #FF6B00;
+    --primary-foreground: #FFFFFF;
+    --secondary: #174450;
+    --secondary-foreground: #F2F7F7;
+    --muted: #12343E;
+    --muted-foreground: #96B8C2;
+    --accent: #174450;
+    --accent-foreground: #F2F7F7;
+    --destructive: #E0356B;
+    --border: #174450;
+    --input: #1B4A58;
+    --ring: #FF6B00;
+    --chart-1: #FF6B00;
+    --chart-2: #D91B5C;
+    --chart-3: #2FA3B8;
+    --chart-4: #96B8C2;
+    --chart-5: #174450;
+    --sidebar: #081B20;
+    --sidebar-foreground: #F2F7F7;
+    --sidebar-primary: #FF6B00;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #174450;
+    --sidebar-accent-foreground: #F2F7F7;
+    --sidebar-border: #174450;
+    --sidebar-ring: #FF6B00;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+
+/* wordmark e títulos no espírito do logo: Outfit, pesada e justa */
+.font-brand {
+  font-family: var(--font-heading);
+}
+
+/* coração que dá o pulinho ao curtir */
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.animate-pop {
+  animation: pop 0.3s ease-in-out;
+}
+
+/* ruído CRT sutil de tela de 2006 */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* barra de rolagem fina petrol */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: #174450; border-radius: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
