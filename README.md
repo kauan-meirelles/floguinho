@@ -54,31 +54,4 @@ git clone [https://github.com/kauan-meirelles/floguinho.git](https://github.com/
 cd floguinho
 ```
 
-### 2. Configurar o Backend
-
-# Entra na pasta do backend e cria um ambiente virtual
-cd backend
-python -m venv venv
-
-# Ativa o ambiente virtual (no Windows)
-venv\Scripts\activate
-
-# Instala as dependências e configura o ficheiro .env com a tua string do MongoDB
-pip install -r requirements.txt
-
-### 3. Configurar o Frontend
-
-# Volta à raiz e entra na pasta do frontend
-cd ../frontend
-npm install
-
-### 4. Iniciar a Aplicação
-
-# No primeiro terminal (Backend):
-cd backend
-uvicorn server:app --reload
-
-# No segundo terminal (Frontend):
-cd frontend
-npm run dev
 
