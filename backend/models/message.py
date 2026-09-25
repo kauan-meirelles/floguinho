@@ -1,14 +1,19 @@
-"""Chat models — keep the TS mirrors in frontend/src/lib/types.ts in sync."""
-
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class MessageCreate(BaseModel):
     to_username: str
-    text: str = Field(min_length=1, max_length=500)
+    text: str = Field(default="", max_length=500)
+    photo_url: Optional[str] = Field(default=None, max_length=1000)
+
+    @model_validator(mode="after")
+    def needs_text_or_photo(self):
+        if not self.text.strip() and not (self.photo_url or "").strip():
+            raise ValueError("manda um texto ou uma foto")
+        return self
 
 
 class MessageOut(BaseModel):
@@ -18,6 +23,7 @@ class MessageOut(BaseModel):
     to_id: Optional[str] = None
     to_username: str
     text: str
+    photo_url: Optional[str] = None
     read: bool = False
     created_at: datetime
 

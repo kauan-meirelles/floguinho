@@ -71,6 +71,7 @@ export interface MessageOut {
   from_username: string;
   to_username: string;
   text: string;
+  photo_url: string | null;
   created_at: string;
 }
 

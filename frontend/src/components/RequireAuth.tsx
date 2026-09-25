@@ -34,7 +34,7 @@ export default function RequireAuth() {
   return (
     <FloguinhoShell>
       <TopNavBar />
-      <main className="flex-1 pb-20">
+      <main className="flex-1 pb-20 lg:pb-4">
         <Outlet />
       </main>
       <BottomTabBar />

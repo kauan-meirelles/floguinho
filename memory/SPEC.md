@@ -15,11 +15,11 @@ App mobile-style: frame escuro petrol (#0C232A) centralizado no desktop, acentos
 - `comments`: id, post_id, user_id, username, avatar_url, text, created_at
 - `messages`: id, from_id, from_username, to_id, to_username, text, read, created_at — DMs privadas entre flogs
 
-## Endpoints (/api, todos exigem sessão exceto /auth/* e GET /uploads/{name})
+## Endpoints (/api, todos exigem sessão exceto /auth/*, POST /uploads e GET /uploads/{name})
 - POST /auth/signup · POST /auth/login · POST /auth/logout · GET /auth/me
 - GET /users?q= (busca, ordena por fãs) · GET /users/{username} (perfil + fans/migos/fotos + is_following) · PUT /users/me (display_name, bio, avatar_url) · POST /users/password · POST /users/{username}/follow (toggle)
 - GET /posts?username=&skip=&limit= (feed hydratado com comentários/likes) · POST /posts · GET /posts/{id} · POST /posts/{id}/like (toggle) · POST /posts/{id}/comments · DELETE /posts/{id} (só o autor)
-- POST /uploads (multipart, máx 10MB, jpg/png/gif/webp) → {url: "/api/uploads/<name>"} · GET /uploads/{name} (arquivo salvo em backend/uploads/)
+- POST /uploads (multipart, máx 10MB, jpg/png/gif/webp, **público** — o cadastro sobe a foto antes da conta existir) → {url: "/api/uploads/<name>"} · GET /uploads/{name} (arquivo salvo em backend/uploads/)
 - POST /messages {to_username, text} · GET /messages/conversations (última msg + não lidas) · GET /messages/with/{username} (thread asc, marca como lidas) · GET /messages/unread-count
 
 ## Telas
@@ -32,7 +32,7 @@ App mobile-style: frame escuro petrol (#0C232A) centralizado no desktop, acentos
 - /settings: pílulas laranja Conta/Preferências/Notificações; Editar Perfil (dialog), Mudar Senha (dialog), Email, Privacidade, Sessões, Filtros; Desconectar (rosa).
 
 ## Chat (/chat e /chat/:username)
-- DM privado entre flogs, coleção `messages` (from_id/from_username, to_id/to_username, text, read, created_at). Tempo quase real por polling (thread 4s, conversas 6s, selo da aba 10s).
+- DM privado entre flogs, coleção `messages` (from_id/from_username, to_id/to_username, text, photo_url, read, created_at). Texto e/ou foto anexada (upload). Tempo quase real por polling (thread 4s, conversas 6s, selo da aba 10s).
 - Entradas: aba "Chat" na barra inferior (com badge rosa de não lidas), botão "Chat" no perfil de outro usuário, "ver flog" dentro da thread.
 - Seed: conversa de Anitah e Brenda com o dono (a da Brenda fica não lida para demonstrar o selo).
 

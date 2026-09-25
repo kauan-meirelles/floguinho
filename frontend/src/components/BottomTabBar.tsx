@@ -34,7 +34,7 @@ export default function BottomTabBar() {
   return (
     <nav
       data-testid="bottom-tab-bar"
-      className="fixed inset-x-0 bottom-0 z-40 mx-auto flex h-16 max-w-md items-center justify-around border-t border-[#174450] bg-[#081B20] px-1"
+      className="fixed inset-x-0 bottom-0 z-40 mx-auto flex h-16 max-w-md items-center justify-around border-t border-[#174450] bg-[#081B20] px-1 lg:hidden"
     >
       {tabs.map(({ to, icon: Icon, label, testid, badge, end }) => (
         <NavLink

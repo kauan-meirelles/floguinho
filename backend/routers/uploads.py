@@ -1,14 +1,17 @@
-"""Multipart uploads → backend/uploads/, servidos de volta em /api/uploads/{name}."""
+"""Multipart uploads → backend/uploads/, servidos de volta em /api/uploads/{name}.
+
+O POST é público de propósito: o cadastro já deixa o usuário escolher a foto
+do dispositivo antes de existir a conta.
+"""
 
 import re
 import uuid
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile
+from fastapi import APIRouter, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 
-from models import UploadOut
-from routers.auth import require_user
+from models.post import UploadOut
 
 router = APIRouter()
 
@@ -19,7 +22,7 @@ SAFE_NAME = re.compile(r"^[a-f0-9]{32}\.(jpg|png|gif|webp)$")
 
 
 @router.post("/uploads", response_model=UploadOut)
-async def upload(file: UploadFile, me: dict = Depends(require_user)):
+async def upload(file: UploadFile):
     ext = ALLOWED_TYPES.get(file.content_type or "")
     if not ext:
         raise HTTPException(status_code=400, detail="só aceitamos jpg, png, gif ou webp")

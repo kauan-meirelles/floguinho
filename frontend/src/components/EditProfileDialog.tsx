@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link, Upload } from "lucide-react";
 import { toast } from "sonner";
-import { apiGet, apiPut, errorMessage } from "@/lib/api";
-import type { Me } from "@/lib/types";
+import { apiGet, apiPost, apiPut, errorMessage } from "@/lib/api";
+import type { Me, UploadOut } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function EditProfileDialog({
   open,
@@ -26,6 +28,7 @@ export default function EditProfileDialog({
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const meQuery = useQuery({
     queryKey: ["me"],
@@ -40,6 +43,24 @@ export default function EditProfileDialog({
       setAvatarUrl(meQuery.data.avatar_url ?? "");
     }
   }, [open, meQuery.data]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await apiPost<UploadOut>("/uploads", formData);
+      setAvatarUrl(res.url);
+      toast("foto carregada com sucesso! ♥");
+    } catch (err) {
+      toast.error(errorMessage(err));
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
 
   const mut = useMutation({
     mutationFn: () =>
@@ -102,17 +123,48 @@ export default function EditProfileDialog({
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="edit-avatar" className="text-[#FF7A1A]">
-              Foto de perfil (URL)
-            </Label>
-            <Input
-              id="edit-avatar"
-              data-testid="edit-profile-avatar-input"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              maxLength={500}
-              placeholder="https://..."
-            />
+            <Label className="text-[#FF7A1A]">Foto de perfil</Label>
+            <Tabs defaultValue="url" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-[#0C232A]">
+                <TabsTrigger
+                  value="url"
+                  data-testid="edit-avatar-mode-url"
+                  className="flex-1 gap-1 text-xs text-[#7A9CA5] data-[state=active]:bg-[#174450] data-[state=active]:text-white"
+                >
+                  <Link className="h-3.5 w-3.5" /> Usar URL
+                </TabsTrigger>
+                <TabsTrigger
+                  value="upload"
+                  data-testid="edit-avatar-mode-upload"
+                  className="flex-1 gap-1 text-xs text-[#7A9CA5] data-[state=active]:bg-[#174450] data-[state=active]:text-white"
+                >
+                  <Upload className="h-3.5 w-3.5" /> Do meu dispositivo
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="url" className="pt-2">
+                <Input
+                  id="edit-avatar"
+                  data-testid="edit-profile-avatar-input"
+                  value={avatarUrl}
+                  onChange={(e) => setAvatarUrl(e.target.value)}
+                  maxLength={500}
+                  placeholder="https://..."
+                />
+              </TabsContent>
+              <TabsContent value="upload" className="pt-2">
+                <label className="flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded border border-dashed border-[#174450] bg-[#0C232A] text-xs font-semibold text-[#7A9CA5] hover:bg-[#122e37] hover:text-white">
+                  <Upload className="h-4 w-4 text-[#FF7A1A]" />
+                  {uploading ? "carregando..." : avatarUrl ? "foto carregada (clique para trocar)" : "escolher imagem do pc"}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/gif,image/webp"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                    disabled={uploading}
+                  />
+                </label>
+              </TabsContent>
+            </Tabs>
           </div>
           <Button
             type="submit"

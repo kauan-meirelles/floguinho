@@ -1,4 +1,4 @@
-"""Chat privado entre flogs: enviar, conversas, thread e contador de não lidas."""
+"""Chat privado entre flogs: enviar (texto e/ou foto), conversas, thread e não lidas."""
 
 import uuid
 from datetime import datetime, timezone
@@ -6,8 +6,9 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException
 
 from lib.db import db
-from models.message import ConversationOut, MessageOut, MessageCreate, ThreadOut, UnreadOut
+from models.message import ConversationOut, MessageCreate, MessageOut, ThreadOut
 from routers.auth import require_user
+from routers.posts import _check_photo
 
 router = APIRouter()
 
@@ -19,6 +20,7 @@ async def send_message(input: MessageCreate, me: dict = Depends(require_user)):
         raise HTTPException(status_code=404, detail="flog não encontrado")
     if other["id"] == me["id"]:
         raise HTTPException(status_code=400, detail="você não pode mandar recado pra si mesmo kk")
+    photo_url = input.photo_url.strip() if input.photo_url else ""
     doc = {
         "id": uuid.uuid4().hex,
         "from_id": me["id"],
@@ -26,6 +28,7 @@ async def send_message(input: MessageCreate, me: dict = Depends(require_user)):
         "to_id": other["id"],
         "to_username": other["username"],
         "text": input.text.strip(),
+        "photo_url": _check_photo(photo_url) if photo_url else None,
         "read": False,
         "created_at": datetime.now(timezone.utc),
     }
@@ -43,7 +46,10 @@ async def conversations(me: dict = Depends(require_user)):
     convs: dict[str, dict] = {}
     for m in msgs:
         other = m["to_username"] if m["from_id"] == me["id"] else m["from_username"]
-        c = convs.setdefault(other, {"last_text": m["text"], "last_at": m["created_at"], "unread": 0})
+        c = convs.setdefault(
+            other,
+            {"last_text": m["text"] or "foto 📷", "last_at": m["created_at"], "unread": 0},
+        )
         if m["to_id"] == me["id"] and not m.get("read", False):
             c["unread"] += 1
     out: list[ConversationOut] = []
@@ -98,6 +104,7 @@ async def thread(username: str, me: dict = Depends(require_user)):
                 from_username=m["from_username"],
                 to_username=m["to_username"],
                 text=m["text"],
+                photo_url=m.get("photo_url"),
                 created_at=m["created_at"],
             )
             for m in msgs
