@@ -56,21 +56,32 @@ cd floguinho
 
 ### 2. Configurar e Executar o Backend
 No terminal, entra na pasta do backend, ativa o ambiente virtual e inicia o servidor:
+
+```bash
 cd backend
 python -m venv venv
-# No Windows (PowerShell):
+```
+No Windows (PowerShell):
 venv\Scripts\Activate
-# Instalar dependências
-pip install -r requirements.txt
-# Iniciar o servidor FastAPI
+
+Instalar dependências
+```bash
+   pip install -r requirements.txt
+```
+Iniciar o servidor FastAPI
+
+```bash
 uvicorn server:app --reload
+```
 
 ### 3. Configurar e Executar o Frontend
 Abre um novo terminal, entra na pasta do frontend, instala as dependências e inicia a aplicação:
+
+```bash
 cd frontend
 npm install
 npm run dev
-
+```
 Acede a aplicação através do link local fornecido pelo Vite (geralmente http://localhost:5173).
 
 Desenvolvido por Kauan Meirelles
