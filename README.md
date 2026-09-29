@@ -54,4 +54,24 @@ git clone [https://github.com/kauan-meirelles/floguinho.git](https://github.com/
 cd floguinho
 ```
 
+### 2. Configurar e Executar o Backend
+No terminal, entra na pasta do backend, ativa o ambiente virtual e inicia o servidor:
+cd backend
+python -m venv venv
+# No Windows (PowerShell):
+venv\Scripts\Activate
+# Instalar dependências
+pip install -r requirements.txt
+# Iniciar o servidor FastAPI
+uvicorn server:app --reload
+
+### 3. Configurar e Executar o Frontend
+Abre um novo terminal, entra na pasta do frontend, instala as dependências e inicia a aplicação:
+cd frontend
+npm install
+npm run dev
+
+Acede a aplicação através do link local fornecido pelo Vite (geralmente http://localhost:5173).
+
+Desenvolvido por Kauan Meirelles
 
