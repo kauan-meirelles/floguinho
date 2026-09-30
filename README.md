@@ -13,13 +13,13 @@
 
 ## 🌟 Sobre o Projeto
 
-O **Floguinho** é um projeto *full-stack* desenvolvido para recriar a essência visual e interativa dos antigos "flogs" (flogões), combinando uma estética retro muito marcante com uma arquitetura web moderna, rápida e responsiva[cite: 1, 2, 3].
+O **Floguinho** é um projeto *full-stack* desenvolvido para recriar a essência visual e interativa dos antigos "flogs" (flogões), combinando uma estética retro muito marcante com uma arquitetura web moderna, rápida e responsiva.
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-O projeto foi construído utilizando uma stack moderna e robusta[cite: 1, 2, 3]:
+O projeto foi construído utilizando uma stack moderna e robusta:
 
 * **Frontend:**
   * ⚛️ **React** & **TypeScript**
